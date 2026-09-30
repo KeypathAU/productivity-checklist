@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Productivity Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+[hidden]{display:none!important}
+img{max-width:100%}
+:root{
+  --bg:#F3F4EF;--surface:#FFFFFF;--ink:#1D2520;--muted:#5F6A62;--line:#DCE0D6;
+  --accent:#2E6A4F;--accent-soft:#E4EEE6;--mark:#F4C84A;--new:#7A5A00;--new-soft:#F6EAC4;
+  --done:#2E6A4F;--done-soft:#EDF3EC;--danger:#A8322B;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141916;--surface:#1B211D;--ink:#E7EBE5;--muted:#A2ACA4;--line:#2D3530;
+  --accent:#86C7A2;--accent-soft:#213229;--mark:#C9A232;--new:#E6C160;--new-soft:#3A3219;
+  --done:#86C7A2;--done-soft:#1A2620;--danger:#F08A80;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141916;--surface:#1B211D;--ink:#E7EBE5;--muted:#A2ACA4;--line:#2D3530;
+  --accent:#86C7A2;--accent-soft:#213229;--mark:#C9A232;--new:#E6C160;--new-soft:#3A3219;
+  --done:#86C7A2;--done-soft:#1A2620;--danger:#F08A80;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.6;margin:0}
+.wrap{max-width:1140px;margin:0 auto;padding-inline:20px;padding-block:44px 72px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+a{color:var(--accent);text-underline-offset:2px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+.hero{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;padding-bottom:32px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--accent)}
+.hero h1{font-size:clamp(38px,6vw,68px);font-weight:800;letter-spacing:-.035em;line-height:.98;margin-top:12px}
+.hero h1 mark{background:linear-gradient(transparent 58%,var(--mark) 58%,var(--mark) 90%,transparent 90%);color:inherit;padding:0 .06em}
+.hero p{max-width:58ch;color:var(--muted);margin:18px 0 0;font-size:16.5px}
+.ring{position:relative;width:128px;height:128px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .track{stroke:var(--line);fill:none}
+.ring .bar{stroke:var(--accent);fill:none;stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+.ring .lbl{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring b{font-family:var(--f-display);font-size:30px;font-weight:800;display:block;line-height:1;letter-spacing:-.02em}
+.ring span{font-size:12px;color:var(--muted)}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 26px;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line);padding-block:22px;margin:0 0 44px}
+.stat{min-width:0}
+.stat b{font-family:var(--f-display);font-size:26px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;display:block;line-height:1}
+.stat p{margin:6px 0 0;font-size:13px;line-height:1.45}
+.stat small{display:block;margin-top:6px;font-size:11.5px;color:var(--muted)}
+
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;align-items:start}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);display:flex;flex-direction:column;gap:22px}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;padding:9px 0;text-decoration:none;color:var(--ink);font-size:14.5px;font-weight:500;border-bottom:1px solid var(--line)}
+.nav a:hover span:first-child{color:var(--accent)}
+.nav .ct{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.nav .mini{grid-column:1/-1;height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.nav .mini i{display:block;height:100%;background:var(--accent);transition:width .4s}
+.nav a.full .ct{color:var(--done)}
+.group-lbl{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;color:var(--ink)}
+.btn:hover{border-color:var(--ink)}
+.btn.danger{color:var(--danger);border-color:var(--danger)}
+.confirm{font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted);margin-bottom:22px}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+
+main{min-width:0;display:flex;flex-direction:column;gap:56px}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;align-items:baseline;margin-bottom:8px}
+.sec-head h2{font-size:30px;font-weight:700;letter-spacing:-.025em}
+.sec-head .ct{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.lede{color:var(--muted);max-width:64ch;margin:0 0 18px}
+
+.case{border-top:1.5px solid var(--ink);padding-top:22px;margin:0 0 28px;display:flex;flex-direction:column;gap:26px}
+.case .eyebrow{color:var(--new)}
+.case-head h3{font-size:clamp(22px,2.6vw,28px);font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-top:8px;max-width:28ch}
+.case-head p{margin:12px 0 0;color:var(--muted);max-width:64ch}
+.reasons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 32px}
+.reason{padding-top:14px;border-top:3px solid var(--mark)}
+.reason b{font-family:var(--f-display);font-size:18px;font-weight:700;letter-spacing:-.01em;display:block}
+.reason p{margin:6px 0 0;font-size:14.5px}
+.reason small{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
+.objections{background:var(--surface);border-radius:14px;padding:22px 24px}
+.objections h4,.routine h4{font-size:12px;font-weight:600;color:var(--muted);margin:0 0 14px}
+.objections dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px}
+.objections dt{font-family:var(--f-display);font-weight:700;font-size:16px;letter-spacing:-.01em}
+.objections dd{margin:6px 0 0;font-size:14.5px;color:var(--muted)}
+.routine{background:var(--accent-soft);border-radius:14px;padding:20px 24px}
+.routine h4{color:var(--accent)}
+.routine ol{margin:0;padding-left:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 26px;font-size:14.5px}
+@media (max-width:700px){.reasons,.objections dl{grid-template-columns:1fr}.objections,.routine{padding:18px}}
+
+.list{background:var(--surface);border-radius:16px;overflow:hidden}
+.item{border-top:1px solid var(--line);transition:background .2s}
+.item:first-child{border-top:0}
+.item.is-done{background:var(--done-soft)}
+.row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:start;padding:18px 20px}
+.check{appearance:none;width:24px;height:24px;border:2px solid var(--line);border-radius:50%;margin:0;cursor:pointer;display:grid;place-items:center;background:var(--surface);transition:background .15s,border-color .15s}
+.check:hover{border-color:var(--accent)}
+.check:checked{background:var(--done);border-color:var(--done)}
+.check:checked::after{content:"";width:6px;height:11px;border:solid var(--surface);border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
+.ttl{font-weight:600;font-size:16.5px;cursor:pointer;line-height:1.4}
+.is-done .ttl{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--done);text-decoration-thickness:1.5px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:12px;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--bg);color:var(--muted)}
+.tag.new{background:var(--new-soft);color:var(--new)}
+.tag.yours{background:var(--accent-soft);color:var(--accent)}
+.exp{border:1px solid var(--line);background:transparent;cursor:pointer;padding:5px 12px;border-radius:999px;color:var(--ink);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.exp:hover{border-color:var(--ink)}
+.exp svg{transition:transform .2s}
+.item.open .exp svg{transform:rotate(180deg)}
+.detail{padding:0 20px 22px 60px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.8fr);gap:28px}
+.detail h4{font-size:12px;font-weight:600;color:var(--muted);margin:0 0 8px}
+.detail p{margin:0}
+.detail ol,.detail ul{margin:0;padding-left:20px}
+.detail li{margin:7px 0;padding-left:4px}
+.detail li::marker{color:var(--accent);font-weight:700}
+.detail > div{min-width:0}
+kbd{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--bg)}
+.path{font-family:var(--f-mono);font-size:12.5px;background:var(--bg);padding:1px 5px;border-radius:4px}
+
+.empty{color:var(--muted);font-size:14px;padding:16px 20px}
+.sources{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}
+.sources ul{padding-left:18px;margin:8px 0 0}
+.sources li{margin:3px 0}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;gap:28px}
+  .side{position:static}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .hero{grid-template-columns:1fr}
+  .ring{width:108px;height:108px}
+  .detail{grid-template-columns:1fr;padding-left:20px}
+  .row{padding:16px}
+  .exp .word{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Keypath Education · Outlook, Teams and Victa</div>
+      <h1>Productivity <mark>Checklist</mark></h1>
+      <p>The settings and daily habits that stop Outlook, Teams and Victa emails running your day. Tick items off as you go, and open any item for the why and the exact steps. Your progress saves in this browser.</p>
+    </div>
+    <div class="ring" aria-live="polite">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="track" cx="60" cy="60" r="52" stroke-width="10"/><circle class="bar" id="ringBar" cx="60" cy="60" r="52" stroke-width="10" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
+      <div class="lbl"><div><b id="ringPct">0%</b><span id="ringCt">0 of 0</span></div></div>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="Why this matters">
+    <div class="stat"><b>46%</b><p>of a service rep's time is spent with customers. The rest goes on admin and internal tasks.</p><small>Salesforce, State of Service</small></div>
+    <div class="stat"><b>~4 hrs</b><p>a week lost getting back on track after switching between apps, about 1,200 switches a day.</p><small>Harvard Business Review, 2022</small></div>
+    <div class="stat"><b>58%</b><p>of the day, by workers' own estimate, goes on chasing updates, searching for information, switching apps and messages about work.</p><small>Asana Anatomy of Work, 2023 (incl. Australia)</small></div>
+    <div class="stat"><b>10 min</b><p>breaks between back-to-back calls stopped stress building up in the brain. Without them, it kept climbing.</p><small>Microsoft Human Factors Lab, 2021</small></div>
+    <div class="stat"><b>1.8 hrs</b><p>a day spent searching for and gathering information.</p><small>McKinsey Global Institute, 2012</small></div>
+    <div class="stat"><b>28%</b><p>of the working week spent reading and answering email.</p><small>McKinsey Global Institute, 2012</small></div>
+    <div class="stat"><b>3 a day</b><p>checking email three times a day led to significantly lower stress than checking whenever you like.</p><small>Kushlev &amp; Dunn, UBC, 2015</small></div>
+    <div class="stat"><b>0</b><p>advantage for heavy folder filers: in a study of 345 people, they found old emails no better than people who just searched.</p><small>IBM Research, 2011</small></div>
+  </section>
+
+  <div class="layout">
+    <aside class="side">
+      <div>
+        <div class="group-lbl">Sections</div>
+        <nav class="nav" id="nav"></nav>
+      </div>
+      <div class="tools" id="tools">
+        <button type="button" class="btn" id="expandAll">Expand all</button>
+        <button type="button" class="btn" id="resetAll">Reset all</button>
+      </div>
+      <div class="confirm" id="confirm" hidden></div>
+    </aside>
+
+    <main id="main">
+      <div class="legend">
+        <span><span class="tag yours">Your example</span> from your brief</span>
+        <span><span class="tag new">New idea</span> added from research</span>
+      </div>
+      <div id="sections"></div>
+    </main>
+  </div>
+</div>
+
+<script>
+const CASE=`<div class="case">
+<div class="case-head"><div class="eyebrow">The case for a clear inbox</div><h3>An inbox you leave full is a to-do list you never finish</h3><p>Keeping emails in your inbox as reminders feels safe. It is not. The important email gets buried, and you keep re-reading the rest.</p></div>
+<div class="reasons">
+<div class="reason"><b>Nothing gets missed</b><p>In a full inbox, a new student email looks like everything else. In a clear inbox, it is the first thing you see.</p></div>
+<div class="reason"><b>Your head lets go</b><p>Unfinished emails keep nagging at you. Making a plan for them stops that. A flag with a due date is the plan.</p><small>Masicampo &amp; Baumeister, 2011</small></div>
+<div class="reason"><b>Less stress</b><p>People who checked email three times a day felt less stressed and less distracted than when they checked it all day.</p><small>Kushlev &amp; Dunn, 2015</small></div>
+<div class="reason"><b>Read each email once</b><p>A full inbox makes you re-scan emails you have already read every time you open Outlook. Clear it and you deal with each email once.</p></div>
+</div>
+<div class="objections">
+<h4>What people usually say</h4>
+<dl>
+<div><dt>"I keep emails in my inbox so I remember them."</dt><dd>Flag it with a due date and move it to <i>1 Action</i>. The flag reminds you on the right day, and your inbox only shows what is new.</dd></div>
+<div><dt>"I don't have time."</dt><dd>Rules file Victa, CC and notification emails for you, so most of the work is done automatically. What is left takes about 10 minutes at the end of the day.</dd></div>
+<div><dt>"What if I need it later?"</dt><dd>Archive never deletes anything. Search finds it in seconds, and a study of 345 people at IBM found that heavy folder filers were no better at finding old emails than people who just searched.</dd></div>
+<div><dt>"Mine has thousands of emails, it's too late."</dt><dd>Use the fresh start below: move everything older than two weeks into Archive in one go and start from today.</dd></div>
+</dl>
+</div>
+<div class="routine"><h4>The 10 minute end-of-day routine</h4><ol><li>Open your inbox and work top to bottom.</li><li>For each email: delete, do, delegate or defer (see the steps below).</li><li>Check <i>2 Victa bookings</i> for cancellations or changes.</li><li>Look at <i>1 Action</i> and pick what you will do first tomorrow.</li><li>Log off with an empty inbox.</li></ol></div>
+</div>`;
+const SECTIONS=[
+{id:"focus",name:"Notifications",lede:"Every banner and ping is an invitation to switch tasks. Turn off the ones that interrupt and keep the ones that matter.",items:[
+{id:"f1",t:"Turn off Outlook desktop alerts",type:"setup",src:"yours",why:"New-mail pop-ups, including every Victa booking email, pull you out of whatever you are doing. You will still see everything when you next check your inbox. Calendar reminders are a separate setting, so you will still be prompted before each booked call.",steps:["In Outlook, click <b>File</b> at the top left of the screen.","Click <b>Options</b> at the bottom of the left-hand menu. The Outlook Options window opens.","Click <b>Mail</b> in the left-hand list.","Scroll down to the <b>Message arrival</b> section.","Untick all four boxes: <i>Play a sound</i>, <i>Briefly change the mouse pointer</i>, <i>Show an envelope icon in the taskbar</i> and <i>Display a Desktop Alert</i>.","Click <b>OK</b> at the bottom of the window.","Check reminders are still on: go back to <span class='path'>File > Options > Advanced</span>, find the <b>Reminders</b> section and make sure <i>Show reminders</i> is ticked. Click <b>OK</b>."]},
+{id:"f2",t:"Switch off Windows pop-ups for Outlook",type:"setup",src:"new",why:"Windows can show its own pop-ups in the bottom right corner of the screen, even after Outlook's alerts are off. This closes the gap.",steps:["Press <kbd>Win</kbd>+<kbd>I</kbd> on your keyboard to open Windows Settings.","Click <b>System</b> in the left-hand menu, then click <b>Notifications</b>.","Scroll down to <b>Notifications from apps and other senders</b>.","Find <b>Outlook</b> in the list and switch its toggle to <b>Off</b>.","Leave <b>Microsoft Teams</b> on, so you still see chats and calls.","Close the Settings window. There is no save button, the change applies straight away."]},
+{id:"f3",t:"Tune Teams notifications to what matters",type:"setup",src:"new",why:"Out of the box Teams notifies you about likes, reactions and every channel post. Keep direct chats and @mentions, turn down the rest.",steps:["In Teams, click the <b>...</b> (Settings and more) button at the top right, next to your profile picture.","Click <b>Settings</b>, then click <b>Notifications and activity</b> in the left-hand list.","Under <b>Chat</b>, leave <i>Mentions</i> and <i>Replies</i> on, and turn <i>Likes and reactions</i> off.","Under <b>Teams and channels</b>, choose <i>Mentions and replies</i> so you are only notified when a post involves you.","Leave <b>Meetings</b> and <b>Calls</b> notifications on.","Close Settings. Changes save automatically."]},
+{id:"f4",t:"Set quiet time on the Teams and Outlook phone apps",type:"setup",src:"new",why:"Work apps on your phone are the main way the workday leaks into evenings and weekends. Australia's Right to Disconnect makes this a real workplace issue.",steps:["<b>Teams on your phone:</b> tap your profile picture at the top left, tap <b>Notifications</b>, then tap <b>Quiet time</b>.","Turn on <b>Daily quiet hours</b> and set them to your finish and start times, for example 5:30pm to 8:30am.","Turn on <b>Quiet days</b> and select Saturday and Sunday.","<b>Outlook on your phone:</b> tap your profile picture at the top left, tap the bell icon (Do Not Disturb) and choose <b>Scheduled</b>.","Set it for evenings and weekends, then tap the tick to save."]},
+{id:"f5",t:"Use Windows Focus for admin time: 40 minutes on, 5 off",type:"habit",src:"new",why:"Between booked calls there is admin to do: call notes, follow-ups and email. Windows Focus runs a timer that switches on Do Not Disturb, hides badges and stops apps flashing, then prompts a 5 minute break. This is the Pomodoro Technique. Research at Maastricht University found people taking set breaks were less tired and distracted, with better concentration, and finished the same work in less time than people who pushed on and chose their own breaks.",steps:["<b>One-off setup:</b> press <kbd>Win</kbd>+<kbd>I</kbd>, click <b>System</b>, then <b>Focus</b>.","Tick <i>Show the timer in the Clock app</i>, <i>Hide badges on taskbar apps</i>, <i>Hide flashing on taskbar apps</i> and <i>Turn on do not disturb</i>.","Open the <b>Clock</b> app from the Start menu, click the <b>Settings</b> gear at the bottom left, and under <b>Focus periods</b> set the focus period to <i>40 minutes</i> and the break period to <i>5 minutes</i>. If 40 is not listed, choose the nearest option.","<b>Each time:</b> click the date and time at the bottom right of the taskbar (or press <kbd>Win</kbd>+<kbd>N</kbd>).","Use the <b>+</b> and <b>-</b> buttons to set how long you have before your next call, then click <b>Focus</b>.","Work on one admin task until the break prompt, then step away from the screen for 5 minutes.","Tip: calendar reminders still appear, so you will not miss your next booked call."]}
+]},
+{id:"teams",name:"Microsoft Teams",lede:"Set Teams up so you can see at a glance who needs you, with unread meaning it still needs you.",items:[
+{id:"t1",t:"Mark as unread anything you cannot action yet",type:"habit",src:"yours",why:"Once a chat is read it drops out of your attention. Marking it unread keeps it bold in your list until you have dealt with it, so nothing is missed.",steps:["Click <b>Chat</b> in the left-hand bar of Teams.","Hover your mouse over the chat in the list. A <b>...</b> (More options) button appears on the right of it.","Click the <b>...</b> and choose <b>Mark as unread</b>. The chat name turns bold again.","To mark a single message instead: open the chat, hover over the message, click the <b>...</b> that appears above it and choose <b>Mark as unread</b>.","Rule of thumb: if it needs a reply or an action from you, it stays bold until it is done."]},
+{id:"t2",t:"Create custom sections and move people into them",type:"setup",src:"yours",why:"Sections group your chats so your team leader, your team and key contacts are not buried under one long scroll.",steps:["Click <b>Chat</b> in the left-hand bar of Teams.","Right-click any chat in the list, point to <b>Move to</b> and choose <b>New section</b>.","Type a name, for example <i>My TL</i>, and press <kbd>Enter</kbd>. The chat moves into the new section.","Repeat for your other sections. Suggested sections: <i>My TL</i>, <i>My team</i>, <i>Key contacts</i>, <i>Other</i>.","To move more people in, right-click their chat, point to <b>Move to</b> and pick the section. You can also drag chats into a section.","To reorder sections, right-click the section name and choose <b>Move up</b> or <b>Move down</b>, so the most important sits at the top."]},
+{id:"t3",t:"Pin your most important chats",type:"setup",src:"new",why:"Pinned chats stay at the top no matter how busy Teams gets. Your team leader and team chat are good candidates.",steps:["Hover over the chat in your chat list and click the <b>...</b> (More options) button.","Click <b>Pin</b>. The chat moves to the top of your list.","To unpin later, click <b>...</b> again and choose <b>Unpin</b>.","Keep it to a handful, otherwise pinning stops meaning anything."]}
+]},
+{id:"inbox",name:"Outlook inbox and calendar",lede:"Inbox zero does not mean every email is finished. It means every email has a decision: done, handed over, or filed somewhere you will check.",box:true,items:[
+{id:"i2",t:"Set up a simple folder structure",type:"setup",src:"yours",why:"Lots of folders means lots of decisions about where something goes. A few folders plus search covers almost everything.",steps:["In the folder list on the left of Outlook, right-click <b>Inbox</b> and choose <b>New Folder</b>.","Type <i>1 Action</i> and press <kbd>Enter</kbd>.","Repeat to create <i>2 Victa bookings</i> and <i>3 Notifications</i>. The numbers keep them in order at the top.","You already have an <b>Archive</b> folder in your folder list. Use it for anything finished that you might need again.","To find an old email, click the search box at the top of Outlook (or press <kbd>Ctrl</kbd>+<kbd>E</kbd>) and type a name or keyword, rather than building lots of folders."]},
+{id:"i3",t:"Create a rule to file Victa booking emails",type:"setup",src:"yours",why:"Booking confirmations are predictable and the calls are already in your calendar, so they do not need to land in your inbox or trigger an alert. A rule files them automatically as they arrive.",steps:["Find a recent Victa booking email in your inbox.","Right-click it, point to <b>Rules</b> and click <b>Create Rule...</b>. The Create Rule window opens.","Tick the first box, <b>From</b> followed by the Victa sender's name.","Under <i>Do the following</i>, tick <b>Move the item to folder</b>, click <b>Select Folder...</b>, choose <i>2 Victa bookings</i> and click <b>OK</b>.","Optional, to stop the folder showing an unread count: click <b>Advanced Options...</b>, click <b>Next</b>, tick <b>mark it as read</b> in the list of actions, then click <b>Finish</b>.","Otherwise click <b>OK</b>. When Outlook asks, tick <b>Run this rule now on messages already in the current folder</b> and click <b>OK</b> to file your existing Victa emails too.","Check <i>2 Victa bookings</i> at the start of each day for any cancellations or changes."]},
+{id:"i4",t:"Create rules for CC emails and system notifications",type:"setup",src:"yours",why:"Emails where you are only copied in, and automated notifications, rarely need action. Filing them keeps your inbox for emails addressed to you.",steps:["On the <b>Home</b> tab, click <b>Rules</b> and choose <b>Manage Rules &amp; Alerts...</b>.","Click <b>New Rule...</b>. Under <i>Start from a blank rule</i>, click <b>Apply rule on messages I receive</b>, then <b>Next</b>.","<b>For CC emails:</b> tick <b>where my name is in the Cc box</b> and click <b>Next</b>.","Tick <b>move it to the specified folder</b>. In the bottom box, click the underlined word <u>specified</u>, choose a folder (for example <i>3 Notifications</i> or a new <i>CC</i> folder) and click <b>OK</b>, then <b>Next</b>.","Optional exception: tick <b>except if it is marked as importance</b>, click <u>importance</u>, choose <i>High</i> and click <b>OK</b>, so urgent emails still reach your inbox. Click <b>Next</b>.","Type a name for the rule, make sure <b>Turn on this rule</b> is ticked, and click <b>Finish</b>, then <b>OK</b>.","<b>For system notifications:</b> repeat the steps, but in step 3 tick <b>from people or public group</b>, click <u>people or public group</u> and add the sender (for example SharePoint or Genesys notifications). Move them to <i>3 Notifications</i>.","Check these folders once a day so nothing gets buried."]},
+{id:"i6",t:"Give your inbox a fresh start",type:"setup",src:"new",why:"If your inbox has hundreds or thousands of emails, clearing it one by one feels impossible, so nobody starts. A fresh start moves the old backlog to Archive in one go. Nothing is deleted and it is all still searchable.",steps:["Do this after you have set up your folders and rules above.","In your Inbox, click the <b>Received</b> column heading (or <span class='path'>View > Arrange By > Date</span>) so the newest emails are at the top.","Scroll down to the first email that is more than two weeks old and click it once.","Scroll to the very bottom of the inbox, hold <kbd>Shift</kbd> and click the last email. Everything in between is now selected.","Press <kbd>Backspace</kbd> (or drag the selection onto the <b>Archive</b> folder). Outlook may take a minute for a big backlog.","Work through the last two weeks properly using the daily routine below. From here on, you only ever deal with today's email."]},
+{id:"i1",t:"Clear your inbox to zero every day",type:"habit",src:"yours",why:"Deciding once is faster than re-reading the same email five times. Every email gets one of four outcomes, and each has a quick keyboard shortcut.",steps:["<b>Delete it</b> if you do not need it: select the email and press <kbd>Delete</kbd>.","<b>Do it</b> now if it takes under two minutes, then press <kbd>Backspace</kbd> to archive it (it moves to your Archive folder and stays searchable).","<b>Delegate it</b> by forwarding to the right person with <kbd>Ctrl</kbd>+<kbd>F</kbd>, then archive the original.","<b>Defer it</b>: right-click the flag icon on the email, choose <b>Custom</b> and set a due date. Then press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd>, choose <i>1 Action</i> and click <b>OK</b>.","Before you log off, check your inbox is empty and glance at <i>1 Action</i> for tomorrow."]},
+{id:"i5",t:"Respond to every meeting invite",type:"habit",src:"yours",why:"Organisers rely on responses to plan numbers and follow-up. An unanswered invite leads to chasing and can leave the meeting off your calendar.",steps:["Open the meeting invite from your inbox. Respond within one working day.","At the top of the invite, click <b>Accept</b>, <b>Tentative</b> or <b>Decline</b>.","Choose <b>Send the Response Now</b> so the organiser sees your answer. The invite leaves your inbox and the meeting stays in your calendar.","If you cannot attend, choose <b>Decline</b>, then <b>Edit the Response before Sending</b>, and add a short note.","To suggest another time, click <b>Propose New Time</b>, pick a free slot and click <b>Propose Time</b>."]},
+{id:"i7",t:"Before leave: set your out of office and forward your email to the team",type:"leave",src:"yours",why:"Students still email while you are away. Forwarding means the team can pick up and action every email while you are on leave, so no student waits for your return. Leaving <i>Keep a copy</i> unticked means you come back to a clear inbox instead of a backlog the team has already handled.",steps:["<b>Part 1, automatic reply (classic Outlook):</b> click <b>File</b>, then <b>Automatic Replies</b>.","Select <b>Send automatic replies</b>, tick <b>Only send during this time range</b> and set your start and end dates and times. The reply then switches itself on and off.","On the <b>Inside My Organization</b> tab, type your message, for example: <i>I am on leave from [date], returning [date]. Your email has been forwarded to my team, who will respond.</i>","Click the <b>Outside My Organization</b> tab, tick <b>Auto-reply to people outside my organization</b>, choose <b>Anyone outside my organization</b> and add the same message for students. Click <b>OK</b>.","<b>Part 2, forwarding (Outlook on the web):</b> classic Outlook has no forwarding setting, so go to <span class='path'>outlook.office.com</span> in your browser and sign in with your Keypath account.","Click the <b>Settings</b> gear at the top right, then <b>Mail</b>, then <b>Forwarding</b>.","Switch on <b>Enable forwarding</b> and enter the address your team leader has given you for leave cover.","Make sure <b>Keep a copy of forwarded messages</b> is <b>not</b> ticked, then click <b>Save</b>.","<b>Part 3, when you return:</b> forwarding does not switch itself off. Go back to <span class='path'>Settings > Mail > Forwarding</span>, switch off <b>Enable forwarding</b> and click <b>Save</b>.","Tip: add a reminder in your calendar for your first morning back so you do not forget Part 3."]}
+]}
+];
+
+const KEY="cec-progress-v1";
+let done={};
+try{done=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){done={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}};
+const filters={type:"all",src:"all",state:"all"};
+const open=new Set();
+const chev='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+
+function visible(it){
+  if(filters.type!=="all"&&it.type!==filters.type)return false;
+  if(filters.src!=="all"&&it.src!==filters.src)return false;
+  if(filters.state==="todo"&&done[it.id])return false;
+  if(filters.state==="done"&&!done[it.id])return false;
+  return true;
+}
+
+function renderSections(){
+  const root=document.getElementById("sections");
+  root.innerHTML="";
+  const frag=document.createDocumentFragment();
+  SECTIONS.forEach(s=>{
+    const sec=document.createElement("section");
+    sec.id=s.id;
+    const shown=s.items.filter(visible);
+    let html='<div class="sec-head"><h2>'+s.name+'</h2><span class="ct" data-ct="'+s.id+'"></span></div><p class="lede">'+s.lede+'</p>';
+    if(s.box)html+=CASE;
+    html+='<div class="list">';
+    if(!shown.length)html+='<div class="empty">Nothing here matches your filters.</div>';
+    shown.forEach(it=>{
+      const d=!!done[it.id],o=open.has(it.id);
+      html+='<div class="item'+(d?" is-done":"")+(o?" open":"")+'" data-id="'+it.id+'">'+
+        '<div class="row"><input type="checkbox" class="check" id="cb-'+it.id+'" aria-label="'+it.t.replace(/"/g,"")+'"'+(d?" checked":"")+'>'+
+        '<div><div class="ttl" data-toggle="'+it.id+'">'+it.t+'</div><div class="tags">'+
+        (it.src==="yours"?'<span class="tag yours">Your example</span>':'<span class="tag new">New idea</span>')+
+        '<span class="tag">'+({setup:"Set up once",habit:"Daily habit",leave:"Before any leave"}[it.type])+'</span></div></div>'+
+        '<button type="button" class="exp" data-toggle="'+it.id+'" aria-expanded="'+o+'" aria-controls="d-'+it.id+'"><span class="word">How to</span>'+chev+'</button></div>'+
+        '<div class="detail" id="d-'+it.id+'"'+(o?"":" hidden")+'><div><h4>Why it matters</h4><p>'+it.why+'</p></div><div><h4>How to do it</h4><ol>'+it.steps.map(x=>"<li>"+x+"</li>").join("")+'</ol></div></div></div>';
+    });
+    html+='</div>';
+    sec.innerHTML=html;
+    frag.appendChild(sec);
+  });
+  root.appendChild(frag);
+  updateProgress();
+}
+
+function updateProgress(){
+  const all=SECTIONS.flatMap(s=>s.items);
+  const n=all.filter(i=>done[i.id]).length,t=all.length,p=Math.round(n/t*100);
+  document.getElementById("ringPct").textContent=p+"%";
+  document.getElementById("ringCt").textContent=n+" of "+t+" done";
+  document.getElementById("ringBar").style.strokeDashoffset=326.7*(1-n/t);
+  const nav=document.getElementById("nav");
+  nav.innerHTML=SECTIONS.map(s=>{
+    const c=s.items.filter(i=>done[i.id]).length,l=s.items.length;
+    return '<a href="#'+s.id+'" class="'+(c===l?"full":"")+'"><span>'+s.name+'</span><span class="ct">'+c+'/'+l+'</span><span class="mini"><i style="width:'+(c/l*100)+'%"></i></span></a>';
+  }).join("");
+  SECTIONS.forEach(s=>{
+    const el=document.querySelector('[data-ct="'+s.id+'"]');
+    if(el)el.textContent=s.items.filter(i=>done[i.id]).length+" of "+s.items.length+" done";
+  });
+}
+
+document.getElementById("sections").addEventListener("change",e=>{
+  if(!e.target.classList.contains("check"))return;
+  const id=e.target.closest(".item").dataset.id;
+  if(e.target.checked)done[id]=true;else delete done[id];
+  save();
+  if(filters.state!=="all")renderSections();
+  else{e.target.closest(".item").classList.toggle("is-done",e.target.checked);updateProgress();}
+});
+document.getElementById("sections").addEventListener("click",e=>{
+  const t=e.target.closest("[data-toggle]");
+  if(!t)return;
+  const id=t.dataset.toggle,item=t.closest(".item"),d=item.querySelector(".detail"),b=item.querySelector(".exp");
+  const o=!open.has(id);
+  if(o)open.add(id);else open.delete(id);
+  item.classList.toggle("open",o);d.hidden=!o;b.setAttribute("aria-expanded",o);
+});
+document.querySelectorAll(".seg").forEach(seg=>{
+  seg.addEventListener("click",e=>{
+    const b=e.target.closest("button");if(!b)return;
+    filters[seg.dataset.filter]=b.dataset.v;
+    seg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    renderSections();
+  });
+});
+const expBtn=document.getElementById("expandAll");
+expBtn.addEventListener("click",()=>{
+  const all=SECTIONS.flatMap(s=>s.items.map(i=>i.id));
+  const opening=open.size<all.length;
+  open.clear();if(opening)all.forEach(i=>open.add(i));
+  expBtn.textContent=opening?"Collapse all":"Expand all";
+  renderSections();
+});
+const conf=document.getElementById("confirm");
+function ask(msg,fn){
+  conf.hidden=false;
+  conf.innerHTML='<span>'+msg+'</span><button type="button" class="btn danger" id="cYes">Yes, clear</button><button type="button" class="btn" id="cNo">Cancel</button>';
+  document.getElementById("cYes").onclick=()=>{fn();conf.hidden=true;renderSections();};
+  document.getElementById("cNo").onclick=()=>{conf.hidden=true;};
+}
+document.getElementById("resetAll").addEventListener("click",()=>ask("Untick everything?",()=>{done={};save();}));
+renderSections();
+</script>
+</body>
+</html>
