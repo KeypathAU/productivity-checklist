@@ -143,6 +143,28 @@ kbd{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border
   .row{padding:16px}
   .exp .word{display:none}
 }
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:6px}
+.tile{display:flex;flex-direction:column;gap:12px;background:var(--surface);border-radius:18px;padding:24px;text-decoration:none;color:var(--ink);border:1.5px solid transparent;transition:border-color .15s,transform .15s;min-width:0}
+.tile:hover{border-color:var(--accent);transform:translateY(-2px)}
+.ic{width:44px;height:44px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+.tile.full .ic{background:var(--done);color:var(--surface)}
+.tile h3{font-size:23px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.tile p{margin:0;color:var(--muted);font-size:14.5px;flex:1}
+.tile .prog{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.tile .prog span:last-child{color:var(--muted);font-weight:500}
+.tile .bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden}
+.tile .bar i{display:block;height:100%;background:var(--accent);transition:width .4s}
+.tile .go{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:700;color:var(--accent)}
+.home-tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px}
+.view-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.back{display:inline-flex;align-items:center;gap:6px;border:0;background:var(--surface);border-radius:999px;padding:8px 16px 8px 12px;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink)}
+.back:hover{color:var(--accent)}
+.sec-title{display:flex;align-items:center;gap:14px}
+.view-foot{margin-top:24px;display:flex;justify-content:flex-end}
+.next{display:inline-flex;align-items:center;gap:6px;font-weight:700;text-decoration:none;background:var(--accent);color:var(--surface);border-radius:999px;padding:10px 18px;font-size:14px}
+.next:hover{opacity:.9}
+main{scroll-margin-top:16px}
+@media (max-width:900px){.tiles{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -168,29 +190,27 @@ kbd{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border
     <div class="stat"><b>28%</b><p>of the working week spent reading and answering email.</p><small>McKinsey Global Institute, 2012</small></div>
     <div class="stat"><b>3 a day</b><p>checking email three times a day led to significantly lower stress than checking whenever you like.</p><small>Kushlev &amp; Dunn, UBC, 2015</small></div>
     <div class="stat"><b>No faster</b><p>Filing emails into lots of folders did not help people find them later. In a study of 345 people, those who just used search found old emails just as well.</p><small>IBM Research, 2011</small></div>
+    <div class="stat"><b>1 ping</b><p>is enough. Just receiving a phone notification, without even looking at it, hurt people's concentration on a task.</p><small>Florida State University, 2015</small></div>
   </section>
 
-  <div class="layout">
-    <aside class="side">
-      <div>
-        <div class="group-lbl">Sections</div>
-        <nav class="nav" id="nav"></nav>
+  <main id="main">
+    <section id="home">
+      <div class="sec-head"><h2>Pick a section to start</h2></div>
+      <div class="tiles" id="tiles"></div>
+      <div class="home-tools">
+        <button type="button" class="btn" id="resetAll">Reset all ticks</button>
+        <div class="confirm" id="confirm" hidden></div>
       </div>
-      <div class="tools" id="tools">
+    </section>
+    <section id="view" hidden>
+      <div class="view-bar">
+        <button type="button" class="back" id="back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>All sections</button>
         <button type="button" class="btn" id="expandAll">Expand all</button>
-        <button type="button" class="btn" id="resetAll">Reset all</button>
-      </div>
-      <div class="confirm" id="confirm" hidden></div>
-    </aside>
-
-    <main id="main">
-      <div class="legend">
-        <span><span class="tag yours">Your example</span> from your brief</span>
-        <span><span class="tag new">New idea</span> added from research</span>
       </div>
       <div id="sections"></div>
-    </main>
-  </div>
+      <div class="view-foot" id="nextWrap"></div>
+    </section>
+  </main>
 </div>
 
 <script>
@@ -241,74 +261,75 @@ const KEY="cec-progress-v1";
 let done={};
 try{done=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){done={}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}};
-const filters={type:"all",src:"all",state:"all"};
 const open=new Set();
 const chev='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+const ICONS={
+focus:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/><path d="M3 3l18 18"/></svg>',
+teams:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>',
+inbox:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>'
+};
+const TYPES={setup:"Set up once",habit:"Daily habit",leave:"Before any leave"};
+const home=document.getElementById("home"),view=document.getElementById("view"),secRoot=document.getElementById("sections");
+const count=s=>s.items.filter(i=>done[i.id]).length;
 
-function visible(it){
-  if(filters.type!=="all"&&it.type!==filters.type)return false;
-  if(filters.src!=="all"&&it.src!==filters.src)return false;
-  if(filters.state==="todo"&&done[it.id])return false;
-  if(filters.state==="done"&&!done[it.id])return false;
-  return true;
+function current(){const h=location.hash.slice(1);return SECTIONS.find(s=>s.id===h)||null}
+
+function renderTiles(){
+  document.getElementById("tiles").innerHTML=SECTIONS.map(s=>{
+    const c=count(s),l=s.items.length,full=c===l;
+    return '<a class="tile'+(full?" full":"")+'" href="#'+s.id+'"><span class="ic">'+ICONS[s.id]+'</span><h3>'+s.name+'</h3><p>'+s.lede+'</p>'+
+      '<span class="prog"><span>'+(full?"All done":c+" of "+l+" done")+'</span><span>'+l+' items</span></span><span class="bar"><i style="width:'+(c/l*100)+'%"></i></span>'+
+      '<span class="go">'+(c===0?"Start":full?"Review":"Continue")+' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></span></a>';
+  }).join("");
 }
 
-function renderSections(){
-  const root=document.getElementById("sections");
-  root.innerHTML="";
-  const frag=document.createDocumentFragment();
-  SECTIONS.forEach(s=>{
-    const sec=document.createElement("section");
-    sec.id=s.id;
-    const shown=s.items.filter(visible);
-    let html='<div class="sec-head"><h2>'+s.name+'</h2><span class="ct" data-ct="'+s.id+'"></span></div><p class="lede">'+s.lede+'</p>';
-    if(s.box)html+=CASE;
-    html+='<div class="list">';
-    if(!shown.length)html+='<div class="empty">Nothing here matches your filters.</div>';
-    shown.forEach(it=>{
-      const d=!!done[it.id],o=open.has(it.id);
-      html+='<div class="item'+(d?" is-done":"")+(o?" open":"")+'" data-id="'+it.id+'">'+
-        '<div class="row"><input type="checkbox" class="check" id="cb-'+it.id+'" aria-label="'+it.t.replace(/"/g,"")+'"'+(d?" checked":"")+'>'+
-        '<div><div class="ttl" data-toggle="'+it.id+'">'+it.t+'</div><div class="tags">'+
-        (it.src==="yours"?'<span class="tag yours">Your example</span>':'<span class="tag new">New idea</span>')+
-        '<span class="tag">'+({setup:"Set up once",habit:"Daily habit",leave:"Before any leave"}[it.type])+'</span></div></div>'+
-        '<button type="button" class="exp" data-toggle="'+it.id+'" aria-expanded="'+o+'" aria-controls="d-'+it.id+'"><span class="word">How to</span>'+chev+'</button></div>'+
-        '<div class="detail" id="d-'+it.id+'"'+(o?"":" hidden")+'><div><h4>Why it matters</h4><p>'+it.why+'</p></div><div><h4>How to do it</h4><ol>'+it.steps.map(x=>"<li>"+x+"</li>").join("")+'</ol></div></div></div>';
-    });
-    html+='</div>';
-    sec.innerHTML=html;
-    frag.appendChild(sec);
+function renderSection(s){
+  let html='<div class="sec-head"><div class="sec-title"><span class="ic">'+ICONS[s.id]+'</span><h2>'+s.name+'</h2></div><span class="ct" id="secCt"></span></div><p class="lede">'+s.lede+'</p>';
+  if(s.box)html+=CASE;
+  html+='<div class="list">';
+  s.items.forEach(it=>{
+    const d=!!done[it.id],o=open.has(it.id);
+    html+='<div class="item'+(d?" is-done":"")+(o?" open":"")+'" data-id="'+it.id+'">'+
+      '<div class="row"><input type="checkbox" class="check" id="cb-'+it.id+'" aria-label="'+it.t.replace(/"/g,"")+'"'+(d?" checked":"")+'>'+
+      '<div><div class="ttl" data-toggle="'+it.id+'">'+it.t+'</div><div class="tags"><span class="tag">'+TYPES[it.type]+'</span></div></div>'+
+      '<button type="button" class="exp" data-toggle="'+it.id+'" aria-expanded="'+o+'" aria-controls="d-'+it.id+'"><span class="word">How to</span>'+chev+'</button></div>'+
+      '<div class="detail" id="d-'+it.id+'"'+(o?"":" hidden")+'><div><h4>Why it matters</h4><p>'+it.why+'</p></div><div><h4>How to do it</h4><ol>'+it.steps.map(x=>"<li>"+x+"</li>").join("")+'</ol></div></div></div>';
   });
-  root.appendChild(frag);
-  updateProgress();
+  html+='</div>';
+  secRoot.innerHTML=html;
+  const idx=SECTIONS.indexOf(s),nx=SECTIONS[idx+1];
+  document.getElementById("nextWrap").innerHTML=nx?'<a class="next" href="#'+nx.id+'">Next section: '+nx.name+' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>':'<a class="next" href="#">Back to all sections</a>';
+  const all=s.items.every(i=>open.has(i.id));
+  document.getElementById("expandAll").textContent=all?"Collapse all":"Expand all";
+  updateCounts();
 }
 
-function updateProgress(){
+function updateCounts(){
   const all=SECTIONS.flatMap(s=>s.items);
-  const n=all.filter(i=>done[i.id]).length,t=all.length,p=Math.round(n/t*100);
-  document.getElementById("ringPct").textContent=p+"%";
+  const n=all.filter(i=>done[i.id]).length,t=all.length;
+  document.getElementById("ringPct").textContent=Math.round(n/t*100)+"%";
   document.getElementById("ringCt").textContent=n+" of "+t+" done";
   document.getElementById("ringBar").style.strokeDashoffset=326.7*(1-n/t);
-  const nav=document.getElementById("nav");
-  nav.innerHTML=SECTIONS.map(s=>{
-    const c=s.items.filter(i=>done[i.id]).length,l=s.items.length;
-    return '<a href="#'+s.id+'" class="'+(c===l?"full":"")+'"><span>'+s.name+'</span><span class="ct">'+c+'/'+l+'</span><span class="mini"><i style="width:'+(c/l*100)+'%"></i></span></a>';
-  }).join("");
-  SECTIONS.forEach(s=>{
-    const el=document.querySelector('[data-ct="'+s.id+'"]');
-    if(el)el.textContent=s.items.filter(i=>done[i.id]).length+" of "+s.items.length+" done";
-  });
+  const s=current(),el=document.getElementById("secCt");
+  if(s&&el)el.textContent=count(s)+" of "+s.items.length+" done";
 }
 
-document.getElementById("sections").addEventListener("change",e=>{
+function render(){
+  const s=current();
+  home.hidden=!!s;view.hidden=!s;
+  if(s)renderSection(s);else renderTiles();
+  updateCounts();
+}
+
+secRoot.addEventListener("change",e=>{
   if(!e.target.classList.contains("check"))return;
   const id=e.target.closest(".item").dataset.id;
   if(e.target.checked)done[id]=true;else delete done[id];
   save();
-  if(filters.state!=="all")renderSections();
-  else{e.target.closest(".item").classList.toggle("is-done",e.target.checked);updateProgress();}
+  e.target.closest(".item").classList.toggle("is-done",e.target.checked);
+  updateCounts();
 });
-document.getElementById("sections").addEventListener("click",e=>{
+secRoot.addEventListener("click",e=>{
   const t=e.target.closest("[data-toggle]");
   if(!t)return;
   const id=t.dataset.toggle,item=t.closest(".item"),d=item.querySelector(".detail"),b=item.querySelector(".exp");
@@ -316,31 +337,22 @@ document.getElementById("sections").addEventListener("click",e=>{
   if(o)open.add(id);else open.delete(id);
   item.classList.toggle("open",o);d.hidden=!o;b.setAttribute("aria-expanded",o);
 });
-document.querySelectorAll(".seg").forEach(seg=>{
-  seg.addEventListener("click",e=>{
-    const b=e.target.closest("button");if(!b)return;
-    filters[seg.dataset.filter]=b.dataset.v;
-    seg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
-    renderSections();
-  });
+document.getElementById("expandAll").addEventListener("click",()=>{
+  const s=current();if(!s)return;
+  const opening=!s.items.every(i=>open.has(i.id));
+  s.items.forEach(i=>opening?open.add(i.id):open.delete(i.id));
+  renderSection(s);
 });
-const expBtn=document.getElementById("expandAll");
-expBtn.addEventListener("click",()=>{
-  const all=SECTIONS.flatMap(s=>s.items.map(i=>i.id));
-  const opening=open.size<all.length;
-  open.clear();if(opening)all.forEach(i=>open.add(i));
-  expBtn.textContent=opening?"Collapse all":"Expand all";
-  renderSections();
-});
+document.getElementById("back").addEventListener("click",()=>{location.hash=""});
+window.addEventListener("hashchange",()=>{render();document.getElementById("main").scrollIntoView({block:"start"})});
 const conf=document.getElementById("confirm");
-function ask(msg,fn){
+document.getElementById("resetAll").addEventListener("click",()=>{
   conf.hidden=false;
-  conf.innerHTML='<span>'+msg+'</span><button type="button" class="btn danger" id="cYes">Yes, clear</button><button type="button" class="btn" id="cNo">Cancel</button>';
-  document.getElementById("cYes").onclick=()=>{fn();conf.hidden=true;renderSections();};
+  conf.innerHTML='<span>Untick everything?</span><button type="button" class="btn danger" id="cYes">Yes, clear</button><button type="button" class="btn" id="cNo">Cancel</button>';
+  document.getElementById("cYes").onclick=()=>{done={};save();conf.hidden=true;render();};
   document.getElementById("cNo").onclick=()=>{conf.hidden=true;};
-}
-document.getElementById("resetAll").addEventListener("click",()=>ask("Untick everything?",()=>{done={};save();}));
-renderSections();
+});
+render();
 </script>
 </body>
 </html>
