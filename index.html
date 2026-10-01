@@ -178,6 +178,24 @@ main{scroll-margin-top:16px}
 .sec-head .ic{background:var(--cs,var(--accent-soft));color:var(--c,var(--accent))}
 .reason{border-top-color:var(--mark)}
 .tile.full .ic{background:var(--c,var(--done));color:#fff}
+.eats{background:var(--surface);border-radius:20px;padding:32px;margin:0 0 48px;box-shadow:0 1px 2px rgba(35,38,47,.05),0 6px 20px rgba(35,38,47,.06)}
+.eats-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center;margin-bottom:24px}
+.eats-num{font-family:var(--f-display);font-weight:800;font-size:clamp(52px,7vw,84px);letter-spacing:-.04em;line-height:.9;background:linear-gradient(transparent 60%,var(--mark) 60%,var(--mark) 92%,transparent 92%);padding:0 .06em}
+.eats-head h2{font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.eats-head p{margin:8px 0 0;color:var(--muted);max-width:72ch}
+.eats-rows{display:flex;flex-direction:column}
+.eats-row{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr) minmax(0,1.5fr);gap:20px;padding:16px 0;border-top:1px solid var(--line);align-items:start;font-size:14.5px}
+.eats-row b{font-family:var(--f-display);font-size:16.5px;font-weight:700;letter-spacing:-.01em}
+.eats-row > span:nth-child(2){color:var(--muted)}
+.eats-label{font-size:12px;font-weight:600;color:var(--muted);padding:0 0 10px;border-top:0}
+.eats-label > span:nth-child(2){color:var(--muted)}
+.fix{display:flex;flex-direction:column;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--cs);color:var(--c);text-decoration:none;border:1px solid transparent}
+.chip:hover{border-color:var(--c)}
+.eats-note{margin:6px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.eats-note small{display:block;margin-top:4px;font-size:12px}
+@media (max-width:800px){.eats{padding:22px 18px}.eats-head{grid-template-columns:1fr;gap:10px}.eats-row{grid-template-columns:1fr;gap:6px}.eats-label{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -196,16 +214,34 @@ main{scroll-margin-top:16px}
   </header>
 
   <section class="stats" aria-label="Why this matters">
-    <div class="stat"><b>54%</b><p>of customer service employees' time goes on admin and internal tasks instead of helping customers. Less than half the day is spent with the people they are there to support.</p><small>Salesforce, State of Service</small></div>
-    <div class="stat"><b>58%</b><p>of the working day, by people's own estimate, goes on chasing updates, searching for information, switching apps and messages about work.</p><small>Asana Anatomy of Work, 2023 (incl. Australia)</small></div>
+    <div class="stat"><b>68%</b><p>of people say they do not have enough uninterrupted focus time in their workday.</p><small>Microsoft Work Trend Index, 2023 (31,000 people)</small></div>
+    <div class="stat"><b>117 + 153</b><p>emails and Teams messages the average worker receives every working day.</p><small>Microsoft Work Trend Index, 2025</small></div>
+    <div class="stat"><b>9.5 min</b><p>to get back into a productive flow after switching to a different app.</p><small>Qatalog and Cornell University, 2021</small></div>
+    <div class="stat"><b>25%</b><p>of the working week is spent just searching for answers and information.</p><small>Atlassian State of Teams, 2025 (12,000 people)</small></div>
+    <div class="stat"><b>57%</b><p>of the working day goes on communicating in meetings, email and chat, leaving 43% for actually doing the work.</p><small>Microsoft Work Trend Index, 2023</small></div>
+    <div class="stat"><b>48%</b><p>of employees say their work feels chaotic and fragmented.</p><small>Microsoft Work Trend Index, 2025</small></div>
+    <div class="stat"><b>54%</b><p>of customer service employees' time goes on admin and internal tasks instead of helping customers.</p><small>Salesforce State of Service</small></div>
     <div class="stat"><b>10 min</b><p>breaks between back-to-back calls stopped stress building up in the brain. Without them, it kept climbing.</p><small>Microsoft Human Factors Lab, 2021</small></div>
-    <div class="stat"><b>1.8 hrs</b><p>a day spent searching for and gathering information.</p><small>McKinsey Global Institute, 2012</small></div>
-    <div class="stat"><b>28%</b><p>of the working week spent reading and answering email.</p><small>McKinsey Global Institute, 2012</small></div>
-    <div class="stat"><b>3 a day</b><p>checking email three times a day led to significantly lower stress than checking whenever you like.</p><small>Kushlev &amp; Dunn, UBC, 2015</small></div>
-    <div class="stat"><b>No faster</b><p>Filing emails into lots of folders did not help people find them later. In a study of 345 people, those who just used search found old emails just as well.</p><small>IBM Research, 2011</small></div>
-    <div class="stat"><b>1 ping</b><p>is enough. Just receiving a phone notification, without even looking at it, hurt people's concentration on a task.</p><small>Florida State University, 2015</small></div>
   </section>
 
+  <section class="eats" aria-labelledby="eatsTitle">
+    <div class="eats-head">
+      <div class="eats-num">58%</div>
+      <div>
+        <h2 id="eatsTitle">What eats up 58% of the working day</h2>
+        <p>Research by Asana found that 58% of the working day goes on "work about work": switching apps, searching, messages about work, chasing updates and juggling priorities. This checklist is designed to win some of that time back.</p>
+      </div>
+    </div>
+    <div class="eats-rows">
+      <div class="eats-row eats-label"><span>What eats the time</span><span>What it looks like</span><span>How the checklist helps</span></div>
+      <div class="eats-row"><b>Switching between apps</b><span>Every pop-up and app switch pulls you off task and takes time to get back.</span><span class="fix">Turn off alerts and use Focus sessions for admin time.<span class="chips"><a class="chip" href="#focus" style="--c:#E8505B;--cs:#FDE9EA">Notifications</a><a class="chip" href="#general" style="--c:#F2762E;--cs:#FFEDE2">General productivity</a></span></span></div>
+      <div class="eats-row"><b>Searching for information</b><span>Hunting through a full inbox or a long chat list for that one message.</span><span class="fix">Simple folders, search, Teams sections and pinned chats.<span class="chips"><a class="chip" href="#inbox" style="--c:#1C8BE0;--cs:#E4F2FD">Outlook inbox</a><a class="chip" href="#teams" style="--c:#7B61FF;--cs:#EFEBFF">Microsoft Teams</a></span></span></div>
+      <div class="eats-row"><b>Messages and emails about work</b><span>Booking confirmations, CC threads and notifications competing with the emails that matter.</span><span class="fix">Clear your inbox daily and let rules file the predictable mail.<span class="chips"><a class="chip" href="#inbox" style="--c:#1C8BE0;--cs:#E4F2FD">Outlook inbox</a><a class="chip" href="#victa" style="--c:#E69A00;--cs:#FFF3D6">Victa bookings</a></span></span></div>
+      <div class="eats-row"><b>Chasing updates</b><span>Following up on things that slipped through, or students left waiting.</span><span class="fix">Mark as unread so nothing is missed, and forward your email when on leave.<span class="chips"><a class="chip" href="#teams" style="--c:#7B61FF;--cs:#EFEBFF">Microsoft Teams</a><a class="chip" href="#leave" style="--c:#0F9D74;--cs:#E3F6EF">Emails on leave</a></span></span></div>
+      <div class="eats-row"><b>Juggling changing priorities</b><span>Letting whatever arrives first decide your day.</span><span class="fix">Choose your three most important tasks and sort by urgent and important.<span class="chips"><a class="chip" href="#general" style="--c:#F2762E;--cs:#FFEDE2">General productivity</a></span></span></div>
+    </div>
+    <p class="eats-note">Some of this is the job itself, like replying to students. The aim is to cut the wasted part. <small>Asana Anatomy of Work, 2023 (incl. Australia)</small></p>
+  </section>
   <main id="main">
     <section id="home">
       <div class="sec-head"><h2>Pick a section to start</h2></div>
@@ -231,8 +267,8 @@ const CASE=`<div class="case">
 <div class="case-head"><div class="eyebrow">The case for a clear inbox</div><h3>An inbox you leave full is a to-do list you never finish</h3><p>Keeping emails in your inbox as reminders feels safe. It is not. The important email gets buried, and you keep re-reading the rest.</p></div>
 <div class="reasons">
 <div class="reason"><b>Nothing gets missed</b><p>In a full inbox, a new student email looks like everything else. In a clear inbox, it is the first thing you see.</p></div>
-<div class="reason"><b>Your head lets go</b><p>Unfinished emails keep nagging at you. Making a plan for them stops that. A flag with a due date is the plan.</p><small>Masicampo &amp; Baumeister, 2011</small></div>
-<div class="reason"><b>Less stress</b><p>People who checked email three times a day felt less stressed and less distracted than when they checked it all day.</p><small>Kushlev &amp; Dunn, 2015</small></div>
+<div class="reason"><b>Your head lets go</b><p>Unfinished emails keep nagging at you. A flag with a due date turns each one into a plan, so you can stop thinking about it until it is due.</p></div>
+<div class="reason"><b>Fewer interruptions</b><p>When you deal with email at set times and finish the day at zero, email stops interrupting everything else you do.</p></div>
 <div class="reason"><b>Read each email once</b><p>A full inbox makes you re-scan emails you have already read every time you open Outlook. Clear it and you deal with each email once.</p></div>
 </div>
 <div class="objections">
@@ -240,7 +276,7 @@ const CASE=`<div class="case">
 <dl>
 <div><dt>"I keep emails in my inbox so I remember them."</dt><dd>Flag it with a due date and move it to <i>1 Action</i>. The flag reminds you on the right day, and your inbox only shows what is new.</dd></div>
 <div><dt>"I don't have time."</dt><dd>Rules file Victa, CC and notification emails for you, so most of the work is done automatically. What is left takes about 10 minutes at the end of the day.</dd></div>
-<div><dt>"What if I need it later?"</dt><dd>Archive never deletes anything. Search finds it in seconds, and a study of 345 people at IBM found that heavy folder filers were no better at finding old emails than people who just searched.</dd></div>
+<div><dt>"What if I need it later?"</dt><dd>Archive never deletes anything, and search finds it in seconds. You do not need lots of folders to find an old email.</dd></div>
 <div><dt>"Mine has thousands of emails, it's too late."</dt><dd>Use the fresh start below: move everything older than two weeks into Archive in one go and start from today.</dd></div>
 </dl>
 </div>
@@ -274,7 +310,7 @@ const SECTIONS=[
 {id:"l3",t:"Switch forwarding off when you are back",type:"leave",src:"yours",why:"Forwarding does not switch itself off like the automatic reply does. If you forget, the shared inbox keeps getting your email and you do not.",steps:["On your first morning back, go to <a href='https://outlook.office.com' target='_blank' rel='noopener'>outlook.office.com</a> and sign in.","Click the <b>Settings</b> gear and type <i>Forwarding</i> in the settings search box.","Untick <b>Enable forwarding</b> and click <b>Save</b>.","Check with the team for anything they are still handling on your behalf."]}
 ]},
 {id:"general",name:"General productivity",lede:"Simple daily habits that help you plan your day, protect your focus and finish on time.",items:[
-{id:"g1",t:"Start each day by choosing your three most important tasks",type:"habit",src:"new",why:"Choosing three things that must get done today, before you open your inbox, means you work on what matters rather than whatever arrives first. Writing them down also helps your head let go: research shows making a clear plan stops unfinished tasks nagging at you.",steps:["Before you open Outlook, ask yourself: <i>if I only get three things done today, what should they be?</i>","Write them down somewhere you will see them all day: a notepad, a sticky note on your screen, or a piece of paper next to your keyboard.","Prefer digital? Add them to <b>My Day</b> in <b>Microsoft To Do</b> (click Start and type <i>To Do</i>).","Do the hardest or least appealing one first, while you are fresh.","Tick them off as you go, and pick tomorrow's three tasks before you log off."]},
+{id:"g1",t:"Start each day by choosing your three most important tasks",type:"habit",src:"new",why:"Choosing three things that must get done today, before you open your inbox, means you work on what matters rather than whatever arrives first. Writing them down also helps your head let go, because you are not trying to remember everything at once.",steps:["Before you open Outlook, ask yourself: <i>if I only get three things done today, what should they be?</i>","Write them down somewhere you will see them all day: a notepad, a sticky note on your screen, or a piece of paper next to your keyboard.","Prefer digital? Add them to <b>My Day</b> in <b>Microsoft To Do</b> (click Start and type <i>To Do</i>).","Do the hardest or least appealing one first, while you are fresh.","Tick them off as you go, and pick tomorrow's three tasks before you log off."]},
 {id:"f5",t:"Use Windows Focus for admin time: 40 minutes on, 5 off",type:"habit",src:"new",why:"Between booked calls there is admin to do: call notes, follow-ups and email. Windows Focus runs a timer that switches on Do Not Disturb, hides badges and stops apps flashing, then prompts a 5 minute break. This is the Pomodoro Technique. Research at Maastricht University found people taking set breaks were less tired and distracted, with better concentration, and finished the same work in less time than people who pushed on and chose their own breaks.",steps:["<b>One-off setup:</b> press <kbd>Win</kbd>+<kbd>I</kbd>, click <b>System</b>, then <b>Focus</b>.","Tick <i>Show the timer in the Clock app</i>, <i>Hide badges on taskbar apps</i>, <i>Hide flashing on taskbar apps</i> and <i>Turn on do not disturb</i>.","Open the <b>Clock</b> app from the Start menu, click the <b>Settings</b> gear at the bottom left, and under <b>Focus periods</b> set the focus period to <i>40 minutes</i> and the break period to <i>5 minutes</i>. If 40 is not listed, choose the nearest option.","<b>Each time:</b> click the date and time at the bottom right of the taskbar (or press <kbd>Win</kbd>+<kbd>N</kbd>).","Use the <b>+</b> and <b>-</b> buttons to set how long you have before your next call, then click <b>Focus</b>.","Work on one admin task until the break prompt, then step away from the screen for 5 minutes.","Tip: calendar reminders still appear, so you will not miss your next booked call."]},
 {id:"g2",t:"Sort tasks by urgent and important",type:"habit",src:"new",why:"Not everything that feels urgent is important. The Eisenhower Matrix is a simple way to decide what to do now, what to plan, and what to hand off or drop, so the loudest task does not always win.",steps:["<b>Urgent and important:</b> do it now. For example, a student at risk of withdrawing.","<b>Important, not urgent:</b> plan a time for it, such as a Focus session. For example, call notes or follow-ups.","<b>Urgent, not important:</b> keep it quick or pass it to the right person. For example, a routine request someone else can answer.","<b>Neither:</b> drop it. For example, a newsletter you never read.","Use it when choosing your three most important tasks, or whenever the list feels too long."]},
 {id:"g3",t:"Take a short break between back-to-back calls",type:"habit",src:"new",why:"In a Microsoft brain study, stress kept building across back-to-back meetings. With a short break between them, it stayed level. A few minutes between calls means you start each student call fresh.",steps:["When a call ends, finish your notes, then step away from the screen for 2 to 3 minutes.","Stand up, stretch or grab a glass of water.","Avoid filling the gap with email. It keeps your brain in work mode.","If you have a longer gap, use a Focus session for admin instead."]},
