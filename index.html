@@ -248,10 +248,6 @@ main{scroll-margin-top:16px}
       <div class="sec-head"><h2>How to use this checklist</h2></div>
       <p class="lede wide">Click a section to open its checklist, then click <b>How to</b> on any item for why it matters and the exact steps. Tick items off as you go. Your progress saves in this browser, so you can come back any time.</p>
       <div class="tiles" id="tiles"></div>
-      <div class="home-tools">
-        <button type="button" class="btn" id="resetAll">Reset all ticks</button>
-        <div class="confirm" id="confirm" hidden></div>
-      </div>
     </section>
     <section id="view" hidden>
       <div class="view-bar">
@@ -307,8 +303,8 @@ const SECTIONS=[
 {id:"i3",t:"Create a rule to file Victa booking emails",type:"setup",src:"yours",why:"Booking confirmations are predictable and the calls are already in your calendar, so they do not need to land in your inbox or trigger an alert. A rule files them automatically as they arrive, so they never bury a student email.",steps:["<b>Create the folder first:</b> in the folder list on the left of Outlook, right-click <b>Inbox</b>, choose <b>New Folder</b>, type <i>Victa bookings</i> and press <kbd>Enter</kbd>.","Find a recent Victa booking email in your inbox.","Right-click it, point to <b>Rules</b> and click <b>Create Rule...</b>. The Create Rule window opens.","Tick the first box, <b>From</b> followed by the Victa sender's name.","Under <i>Do the following</i>, tick <b>Move the item to folder</b>, click <b>Select Folder...</b>, choose <i>Victa bookings</i> and click <b>OK</b>.","Optional, to stop the folder showing an unread count: click <b>Advanced Options...</b>, click <b>Next</b>, tick <b>mark it as read</b> in the list of actions, then click <b>Finish</b>.","Otherwise click <b>OK</b>. When Outlook asks, tick <b>Run this rule now on messages already in the current folder</b> and click <b>OK</b> to file your existing Victa emails too."]},
 {id:"v2",t:"Check your Victa bookings folder once a day",type:"habit",src:"new",why:"Filing booking emails keeps your inbox clear, but anything that needs action, such as a cancellation or a change, now lands in the folder instead. A quick daily look means nothing is missed.",steps:["Each morning, click the <i>Victa bookings</i> folder in the folder list on the left of Outlook.","Scan for anything that is not a standard confirmation, such as a cancellation or a change.","Action it, or flag it and move it to <i>1 Action</i>.","Everything else can stay in the folder. There is no need to open each confirmation."]}
 ]},
-{id:"leave",name:"Emails on leave",lede:"If you are away for 3 days or more, forward your email to the shared inbox so the team can look after your students and you come back to a clear inbox.",items:[
-{id:"l2",t:"Leave of 3 days or more: forward your email to the shared inbox",type:"leave",src:"yours",why:"Forwarding means the team can pick up and action every email while you are away, so no student waits for your return. Leaving <i>Keep a copy</i> unticked means you come back to a clear inbox instead of a backlog the team has already handled.",steps:["Go to Outlook on the web at <a href='https://outlook.office.com' target='_blank' rel='noopener'>outlook.office.com</a> and sign in with your Keypath account.","Click the <b>Settings</b> gear at the top right and type <i>Forwarding</i> in the settings search box.","On the <b>Forwarding</b> tab, tick <b>Enable forwarding</b>.","Enter the shared inbox address: <b>current-students@studyonline.unsw.edu.au</b>","Make sure <b>Keep a copy of forwarded messages</b> is <b>not</b> ticked.","Click <b>Save</b>.","Add a reminder in your calendar for your first morning back, so you remember to switch it off."]},
+{id:"leave",name:"Emails on leave",lede:"Any time you are away, planned or unplanned, even for an afternoon or a single day, forward your email to the shared inbox so the team can look after your students and you come back to a clear inbox.",items:[
+{id:"l2",t:"Forward your email to the shared inbox whenever you are away",type:"leave",src:"yours",why:"Forwarding means the team can pick up and action every email while you are away, so no student waits for your return. Leaving <i>Keep a copy</i> unticked means you come back to a clear inbox instead of a backlog the team has already handled.",steps:["Go to Outlook on the web at <a href='https://outlook.office.com' target='_blank' rel='noopener'>outlook.office.com</a> and sign in with your Keypath account.","Click the <b>Settings</b> gear at the top right and type <i>Forwarding</i> in the settings search box.","On the <b>Forwarding</b> tab, tick <b>Enable forwarding</b>.","Enter the shared inbox address: <b>current-students@studyonline.unsw.edu.au</b>","Make sure <b>Keep a copy of forwarded messages</b> is <b>not</b> ticked.","Click <b>Save</b>.","Add a reminder in your calendar for your first morning back, so you remember to switch it off."]},
 {id:"l3",t:"Switch forwarding off when you are back",type:"leave",src:"yours",why:"Forwarding does not switch itself off like the automatic reply does. If you forget, the shared inbox keeps getting your email and you do not.",steps:["On your first morning back, go to <a href='https://outlook.office.com' target='_blank' rel='noopener'>outlook.office.com</a> and sign in.","Click the <b>Settings</b> gear and type <i>Forwarding</i> in the settings search box.","Untick <b>Enable forwarding</b> and click <b>Save</b>.","Check with the team for anything they are still handling on your behalf."]}
 ]},
 {id:"general",name:"General productivity",lede:"Simple daily habits that help you plan your day, protect your focus and finish on time.",items:[
@@ -414,13 +410,6 @@ document.getElementById("expandAll").addEventListener("click",()=>{
 });
 document.getElementById("back").addEventListener("click",()=>{location.hash=""});
 window.addEventListener("hashchange",()=>{render();document.getElementById("main").scrollIntoView({block:"start"})});
-const conf=document.getElementById("confirm");
-document.getElementById("resetAll").addEventListener("click",()=>{
-  conf.hidden=false;
-  conf.innerHTML='<span>Untick everything?</span><button type="button" class="btn danger" id="cYes">Yes, clear</button><button type="button" class="btn" id="cNo">Cancel</button>';
-  document.getElementById("cYes").onclick=()=>{done={};save();conf.hidden=true;render();};
-  document.getElementById("cNo").onclick=()=>{conf.hidden=true;};
-});
 render();
 </script>
 </body>
