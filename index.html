@@ -12,21 +12,14 @@
 [hidden]{display:none!important}
 img{max-width:100%}
 :root{
-  --bg:#F3F4EF;--surface:#FFFFFF;--ink:#1D2520;--muted:#5F6A62;--line:#DCE0D6;
-  --accent:#2E6A4F;--accent-soft:#E4EEE6;--mark:#F4C84A;--new:#7A5A00;--new-soft:#F6EAC4;
-  --done:#2E6A4F;--done-soft:#EDF3EC;--danger:#A8322B;
+  --bg:#FBFAF7;--surface:#FFFFFF;--ink:#23262F;--muted:#626877;--line:#E7E5DF;
+  --accent:#0F9D74;--accent-soft:#E3F6EF;--mark:#FFD45C;--new:#8A5A00;--new-soft:#FFF1CC;
+  --done:#14A87C;--done-soft:#EEF9F4;--danger:#C2362E;
   --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
   --f-body:"Figtree","Segoe UI",system-ui,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#141916;--surface:#1B211D;--ink:#E7EBE5;--muted:#A2ACA4;--line:#2D3530;
-  --accent:#86C7A2;--accent-soft:#213229;--mark:#C9A232;--new:#E6C160;--new-soft:#3A3219;
-  --done:#86C7A2;--done-soft:#1A2620;--danger:#F08A80;color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#141916;--surface:#1B211D;--ink:#E7EBE5;--muted:#A2ACA4;--line:#2D3530;
-  --accent:#86C7A2;--accent-soft:#213229;--mark:#C9A232;--new:#E6C160;--new-soft:#3A3219;
-  --done:#86C7A2;--done-soft:#1A2620;--danger:#F08A80;color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.6;margin:0}
 .wrap{max-width:1360px;margin:0 auto;padding-inline:20px;padding-block:44px 72px}
@@ -176,6 +169,15 @@ main{scroll-margin-top:16px}
 .tiles .tile{grid-column:span 2}
 @media (max-width:1100px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.tiles .tile{grid-column:span 1}}
 @media (max-width:640px){.tiles{grid-template-columns:1fr}}
+.tile,.list,.objections,.back{box-shadow:0 1px 2px rgba(35,38,47,.05),0 6px 20px rgba(35,38,47,.06)}
+.tile{border-top:5px solid var(--c,var(--accent))}
+.tile:hover{border-color:var(--c,var(--accent));border-top-color:var(--c,var(--accent))}
+.ic{background:var(--cs,var(--accent-soft));color:var(--c,var(--accent))}
+.tile .bar i{background:var(--c,var(--accent))}
+.tile .go{color:var(--c,var(--accent))}
+.sec-head .ic{background:var(--cs,var(--accent-soft));color:var(--c,var(--accent))}
+.reason{border-top-color:var(--mark)}
+.tile.full .ic{background:var(--c,var(--done));color:#fff}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -295,6 +297,8 @@ leave:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="curre
 general:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>',
 inbox:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>'
 };
+const COLORS={focus:["#E8505B","#FDE9EA"],teams:["#7B61FF","#EFEBFF"],inbox:["#1C8BE0","#E4F2FD"],victa:["#E69A00","#FFF3D6"],leave:["#0F9D74","#E3F6EF"],general:["#F2762E","#FFEDE2"]};
+const tint=id=>'--c:'+COLORS[id][0]+';--cs:'+COLORS[id][1];
 const TYPES={setup:"Set up once",habit:"Daily habit",leave:"Before any leave"};
 const home=document.getElementById("home"),view=document.getElementById("view"),secRoot=document.getElementById("sections");
 const count=s=>s.items.filter(i=>done[i.id]).length;
@@ -304,13 +308,14 @@ function current(){const h=location.hash.slice(1);return SECTIONS.find(s=>s.id==
 function renderTiles(){
   document.getElementById("tiles").innerHTML=SECTIONS.map(s=>{
     const c=count(s),l=s.items.length,full=c===l;
-    return '<a class="tile'+(full?" full":"")+'" href="#'+s.id+'"><span class="ic">'+ICONS[s.id]+'</span><h3>'+s.name+'</h3><p>'+s.lede+'</p>'+
+    return '<a class="tile'+(full?" full":"")+'" style="'+tint(s.id)+'" href="#'+s.id+'"><span class="ic">'+ICONS[s.id]+'</span><h3>'+s.name+'</h3><p>'+s.lede+'</p>'+
       '<ul class="peek">'+s.items.map(i=>'<li class="'+(done[i.id]?'on':'')+'"><span class="dot"></span>'+i.t+'</li>').join('')+'</ul>'+'<span class="prog"><span>'+(full?"All done":c+" of "+l+" done")+'</span><span>'+l+' items</span></span><span class="bar"><i style="width:'+(c/l*100)+'%"></i></span>'+
       '<span class="go">'+(c===0?"Start":full?"Review":"Continue")+' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></span></a>';
   }).join("");
 }
 
 function renderSection(s){
+  secRoot.setAttribute("style",tint(s.id));
   let html='<div class="sec-head"><div class="sec-title"><span class="ic">'+ICONS[s.id]+'</span><h2>'+s.name+'</h2></div><span class="ct" id="secCt"></span></div><p class="lede">'+s.lede+'</p>';
   if(s.box)html+=CASE;
   html+='<div class="list">';
