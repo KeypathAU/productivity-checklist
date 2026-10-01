@@ -71,6 +71,7 @@ main{min-width:0;display:flex;flex-direction:column;gap:56px}
 .sec-head h2{font-size:30px;font-weight:700;letter-spacing:-.025em}
 .sec-head .ct{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
 .lede{color:var(--muted);max-width:64ch;margin:0 0 18px}
+.lede.wide{max-width:none}
 
 .case{border-top:1.5px solid var(--ink);padding-top:22px;margin:0 0 28px;display:flex;flex-direction:column;gap:26px}
 .case .eyebrow{color:var(--new)}
@@ -245,7 +246,7 @@ main{scroll-margin-top:16px}
   <main id="main">
     <section id="home">
       <div class="sec-head"><h2>How to use this checklist</h2></div>
-      <p class="lede">Click a section to open its checklist, then click <b>How to</b> on any item for why it matters and the exact steps. Tick items off as you go. Your progress saves in this browser, so you can come back any time.</p>
+      <p class="lede wide">Click a section to open its checklist, then click <b>How to</b> on any item for why it matters and the exact steps. Tick items off as you go. Your progress saves in this browser, so you can come back any time.</p>
       <div class="tiles" id="tiles"></div>
       <div class="home-tools">
         <button type="button" class="btn" id="resetAll">Reset all ticks</button>
