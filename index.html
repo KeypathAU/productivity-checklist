@@ -198,6 +198,12 @@ main{scroll-margin-top:16px}
 .eats-note{margin:6px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
 .eats-note small{display:block;margin-top:4px;font-size:12px}
 @media (max-width:800px){.eats{padding:22px 18px}.eats-head{grid-template-columns:1fr;gap:10px}.eats-row{grid-template-columns:1fr;gap:6px}.eats-label{display:none}}
+.cost{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;background:var(--new-soft);border-radius:16px;padding:20px 24px}
+.cost-num{font-family:var(--f-display);font-weight:800;font-size:clamp(38px,5vw,56px);letter-spacing:-.03em;line-height:1;color:var(--ink);white-space:nowrap}
+.cost b{font-family:var(--f-display);font-size:18px;font-weight:700;display:block}
+.cost p{margin:6px 0 0;font-size:14.5px}
+.cost small{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
+@media (max-width:700px){.cost{grid-template-columns:1fr;gap:8px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -264,6 +270,7 @@ main{scroll-margin-top:16px}
 <script>
 const CASE=`<div class="case">
 <div class="case-head"><div class="eyebrow">The case for a clear inbox</div><h3>An inbox you leave full is a to-do list you never finish</h3><p>Keeping emails in your inbox as reminders feels safe. It is not. The important email gets buried, and you keep re-reading the rest.</p></div>
+<div class="cost"><div class="cost-num">48 hrs</div><div><b>What a full inbox can cost you in a year</b><p>Every time you open a full inbox, you scan past emails you have already seen. At 50 opens a day and 15 seconds each time, that is 12.5 minutes a day, or about 48 hours a year. That is around 6 working days spent looking at emails you have already read, before counting the time it takes to refocus after getting distracted by one.</p><small>Estimate based on 50 inbox opens a day, 15 seconds each, 230 working days and a 7.6 hour day.</small></div></div>
 <div class="reasons">
 <div class="reason"><b>Nothing gets missed</b><p>In a full inbox, a new student email looks like everything else. In a clear inbox, it is the first thing you see.</p></div>
 <div class="reason"><b>Faster replies for students</b><p>When every email is dealt with or planned each day, nothing sits for a week. Students get answers sooner, with fewer follow-up calls and complaints.</p></div>
