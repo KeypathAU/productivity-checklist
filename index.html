@@ -429,5 +429,64 @@ document.getElementById("back").addEventListener("click",()=>{location.hash=""})
 window.addEventListener("hashchange",()=>{render();document.getElementById("main").scrollIntoView({block:"start"})});
 render();
 </script>
+<script>
+// Bumped on every deploy. The page asks the live copy what its build is and
+// offers a reload to whoever already has it open.
+const PAGE_BUILD = "2026-11-26-01";
+(function () {
+  if (location.hostname === "localhost" || location.protocol === "file:") return;
+  var KEY = "page-build-seen:" + location.pathname;
+  var dismissed = "";
+  try { dismissed = localStorage.getItem(KEY) || ""; } catch (e) {}
+
+  function show(build) {
+    if (document.getElementById("page-update")) return;
+    var bar = document.createElement("div");
+    bar.id = "page-update";
+    bar.style.cssText = "position:fixed;bottom:18px;left:50%;margin-left:-185px;width:370px;" +
+      "box-sizing:border-box;justify-content:center;z-index:2147483647;display:flex;" +
+      "align-items:center;gap:10px;background:#16202b;color:#fff;border-radius:11px;" +
+      "padding:11px 16px;font-size:13px;font-weight:700;font-family:inherit;" +
+      "box-shadow:0 8px 24px rgba(0,0,0,0.28);";
+    var msg = document.createElement("span");
+    msg.textContent = "This page has been updated.";
+    bar.appendChild(msg);
+    var btn = function (text, ghost, fn) {
+      var b = document.createElement("button");
+      b.textContent = text;
+      b.style.cssText = "border:none;border-radius:7px;padding:5px 13px;font-size:12px;" +
+        "font-weight:800;cursor:pointer;font-family:inherit;" +
+        (ghost ? "background:rgba(255,255,255,0.16);color:#fff;" : "background:#fff;color:#16202b;");
+      b.addEventListener("click", fn);
+      bar.appendChild(b);
+    };
+    btn("Reload", false, function () { location.reload(); });
+    btn("Not now", true, function () {
+      dismissed = build;
+      try { localStorage.setItem(KEY, build); } catch (e2) {}
+      bar.remove();
+    });
+    document.body.appendChild(bar);
+  }
+
+  function check() {
+    if (document.hidden) return;
+    if (document.getElementById("page-update")) return;
+    fetch(location.pathname + "?build=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.text(); })
+      .then(function (t) {
+        var m = t.match(/PAGE_BUILD = "([^"]+)"/);
+        if (!m) return;
+        if (m[1] === PAGE_BUILD || m[1] === dismissed) return;
+        show(m[1]);
+      })
+      .catch(function () {});
+  }
+
+  setTimeout(check, 20000);
+  setInterval(check, 300000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) check(); });
+})();
+</script>
 </body>
 </html>
